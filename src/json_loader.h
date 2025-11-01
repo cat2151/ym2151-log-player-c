@@ -6,8 +6,11 @@
 // Parse hex string (e.g., "0x08" -> 8)
 static uint8_t parse_hex(const char *str)
 {
+    if (!str)
+        return 0;
+    
     uint32_t value = 0;
-    if (str[0] == '0' && (str[1] == 'x' || str[1] == 'X'))
+    if (str[0] == '0' && str[1] && (str[1] == 'x' || str[1] == 'X'))
     {
         str += 2;
     }
@@ -29,9 +32,15 @@ static uint8_t parse_hex(const char *str)
 // Parse integer from string
 static uint32_t parse_uint(const char *str)
 {
+    if (!str)
+        return 0;
+    
     uint32_t value = 0;
     while (*str >= '0' && *str <= '9')
     {
+        // Prevent overflow
+        if (value > UINT32_MAX / 10)
+            break;
         value = value * 10 + (*str - '0');
         str++;
     }
@@ -105,7 +114,8 @@ RegisterEventList *load_events_json(const char *filename)
         // Find is_data (optional, defaults to 0)
         uint8_t is_data = 0;
         char *is_data_pos = find_str(pos, "\"is_data\":");
-        if (is_data_pos && is_data_pos < find_str(pos, "}"))
+        char *end_brace_pos = find_str(pos, "}");
+        if (is_data_pos && end_brace_pos && is_data_pos < end_brace_pos)
         {
             is_data_pos += 10; // Skip "is_data":
             while (*is_data_pos == ' ')
