@@ -61,3 +61,6 @@ player.exe
 # Output files
 *.wav
 *.json
+
+# But include sample files
+!sample_events.json

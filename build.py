@@ -359,7 +359,7 @@ def run_test():
 
 def main():
     """Main entry point."""
-    print("ym2151-zig-cc Build Script")
+    print("YM2151 Log Player Build Script")
     print("=" * 60)
 
     # Parse command line arguments
@@ -444,20 +444,12 @@ def main():
         print("Usage: python3 build.py [command]")
         print()
         print("Commands:")
-        print("  build                Build for current platform (default)")
-        print("  build-gcc            Build with gcc (Linux only)")
-        print("  build-windows        Build Windows executable (cross-compile if on Linux)")
-        print("  build-phase2         Build phase2 WAV output for current platform")
-        print("  build-phase2-gcc     Build phase2 WAV output with gcc (Linux only)")
-        print("  build-phase2-windows Build phase2 WAV output Windows executable (cross-compile if on Linux)")
-        print("  build-phase3         Build phase3 real-time audio for current platform")
-        print("  build-phase3-gcc     Build phase3 real-time audio with gcc (Linux only)")
-        print("  build-phase3-windows Build phase3 real-time audio Windows executable (cross-compile if on Linux)")
-        print("  build-phase4         Build phase4 music sequence player for current platform")
-        print("  build-phase4-gcc     Build phase4 music player with gcc (Linux only)")
-        print("  build-phase4-windows Build phase4 music player Windows executable (cross-compile if on Linux)")
-        print("  test                 Run the test program")
+        print("  build-phase4         Build YM2151 log player for current platform (recommended)")
+        print("  build-phase4-gcc     Build YM2151 log player with gcc (Linux only)")
+        print("  build-phase4-windows Build YM2151 log player Windows executable (cross-compile if on Linux)")
         print("  help                 Show this help message")
+        print()
+        print("Note: Other build commands from ym2151-zig-cc are preserved but not used in this project.")
         return 0
 
     else:
