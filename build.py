@@ -4,7 +4,6 @@ Build script for ym2151-zig-cc test program
 Supports Linux, Windows (native), and cross-compilation
 """
 
-import os
 import platform
 import subprocess
 import sys

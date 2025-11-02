@@ -20,32 +20,8 @@ YM2151レジスタイベントログをJSONファイルから読み込んで、�
 
 ## ビルド
 
-### Linux (gcc)
-```bash
-gcc -o player src/player.c opm.c -lm -lpthread -ldl -fwrapv
-```
-
-### Linux (zig cc) / Windows
-```bash
-python build.py build-phase4
-```
-
-または
-
-```bash
-python build.py build-phase4-gcc  # Linux with gcc
-python build.py build-phase4-windows  # Windows cross-compile
-```
-
-## 使用方法
-
-```bash
-./player <json_log_file>
-```
-
-例：
-```bash
-./player events.json
+```powershell
+python build.py build-phase4-windows && ./player events.json
 ```
 
 ## 入力JSON形式
