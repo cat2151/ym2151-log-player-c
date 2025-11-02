@@ -57,6 +57,7 @@ dkms.conf
 # Build artifacts
 player
 player.exe
+test_json_loader
 
 # Output files
 *.wav
@@ -64,7 +65,9 @@ player.exe
 # JSON log files (but not config files)
 /*.json
 !sample_events.json
+!sample_events_pass1.json
 
 # Allow config JSON files
 !.vscode/*.json
 !.github/**/*.json
+_codeql_detected_source_root
