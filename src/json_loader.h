@@ -2,7 +2,8 @@
 
 // Simple JSON parser for YM2151 log format
 // Expected format: {"events": [{"time": 0, "addr": "0x08", "data": "0x00"}, ...]}
-// Note: "is_data" field is optional and for backward compatibility only
+// Input is always treated as pass1 format (simple register writes) and converted to pass2 format
+// Note: "is_data" field in input JSON is ignored
 
 // Parse hex string (e.g., "0x08" -> 8)
 static uint8_t parse_hex(const char *str)
@@ -112,19 +113,9 @@ RegisterEventList *load_events_json(const char *filename)
             data_pos++;
         uint8_t data = parse_hex(data_pos);
 
-        // Find is_data (optional, defaults to 0)
-        uint8_t is_data = 0;
-        char *is_data_pos = find_str(pos, "\"is_data\":");
-        char *end_brace_pos = find_str(pos, "}");
-        if (is_data_pos && end_brace_pos && is_data_pos < end_brace_pos)
-        {
-            is_data_pos += 10; // Skip "is_data":
-            while (*is_data_pos == ' ')
-                is_data_pos++;
-            is_data = parse_uint(is_data_pos);
-        }
-
-        add_event_with_flag(list, time, addr, data, is_data);
+        // Input is always treated as pass1 format, so is_data is always 0
+        // (any "is_data" field in the JSON is ignored)
+        add_event_with_flag(list, time, addr, data, 0);
 
         pos = data_pos + 1;
     }
@@ -132,23 +123,10 @@ RegisterEventList *load_events_json(const char *filename)
     free(buffer);
     printf("✅ Loaded %zu events from %s\n", list->count, filename);
     
-    // Check if this is pass1 format (needs conversion) or pass2 format (already split)
-    // Pass1 format: all events have is_data_write = 0 (or field not present)
-    // Pass2 format: events alternate between is_data_write = 0 and 1
-    int has_data_write_set = 0;
-    for (size_t i = 0; i < list->count; i++)
+    // Always convert pass1 format to pass2 format (split register writes with delays)
+    if (list->count > 0)
     {
-        if (list->events[i].is_data_write == 1)
-        {
-            has_data_write_set = 1;
-            break;
-        }
-    }
-    
-    // If no events have is_data_write=1, this is pass1 format and needs conversion
-    if (!has_data_write_set && list->count > 0)
-    {
-        printf("Detected pass1 format (simple register writes), converting to pass2 format...\n");
+        printf("Converting pass1 format to pass2 format...\n");
         RegisterEventList *pass2 = convert_to_pass2_format(list);
         free_event_list(list);
         return pass2;
