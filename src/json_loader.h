@@ -113,19 +113,9 @@ RegisterEventList *load_events_json(const char *filename)
             data_pos++;
         uint8_t data = parse_hex(data_pos);
 
-        // Find is_data (optional, defaults to 0)
-        uint8_t is_data = 0;
-        char *is_data_pos = find_str(pos, "\"is_data\":");
-        char *end_brace_pos = find_str(pos, "}");
-        if (is_data_pos && end_brace_pos && is_data_pos < end_brace_pos)
-        {
-            is_data_pos += 10; // Skip "is_data":
-            while (*is_data_pos == ' ')
-                is_data_pos++;
-            is_data = parse_uint(is_data_pos);
-        }
-
-        add_event_with_flag(list, time, addr, data, is_data);
+        // Input is always treated as pass1 format, so is_data is always 0
+        // (any "is_data" field in the JSON is ignored)
+        add_event_with_flag(list, time, addr, data, 0);
 
         pos = data_pos + 1;
     }
