@@ -107,9 +107,6 @@ void test_max_output_range(void)
     printf("  Range: %d to %d\n", min_negative, max_positive);
     printf("  int16_t range: -32768 to 32767\n");
     
-    printf("  Range: %d to %d\n", min_negative, max_positive);
-    printf("  int16_t range: -32768 to 32767\n");
-    
     // Analysis
     printf("\n==========================================\n");
     printf("ANALYSIS RESULTS:\n");
